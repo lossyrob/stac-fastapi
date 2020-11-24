@@ -33,6 +33,8 @@ NumType = Union[float, int]
 class CoreCrudClient(PostgresClient, BaseCoreClient):
     """Client for core endpoints defined by stac"""
 
+    title: str = "Arturo STAC API"
+    description: str = "Arturo raster datastore"
     pagination_client: Optional[PaginationTokenClient] = None
     table: Type[database.Item] = database.Item
     collection_table: Type[database.Collection] = database.Collection
@@ -40,8 +42,8 @@ class CoreCrudClient(PostgresClient, BaseCoreClient):
     def landing_page(self, **kwargs) -> LandingPage:
         """landing page"""
         landing_page = LandingPage(
-            title="Arturo STAC API",
-            description="Arturo raster datastore",
+            title=self.title,
+            description=self.description,
             links=[
                 Link(
                     rel=Relations.self,

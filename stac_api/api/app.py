@@ -34,6 +34,8 @@ class StacApi:
 
     settings: ApiSettings
     client: BaseCoreClient
+    title: str = "Arturo STAC API"
+    version: str = "0.1"
     extensions: Optional[List[ApiExtension]] = field(  # type:ignore
         default_factory=list
     )
@@ -149,7 +151,7 @@ class StacApi:
 
         # TODO: parametrize
         openapi_schema = get_openapi(
-            title="Arturo STAC API", version="0.1", routes=self.app.routes
+            title=self.title, version=self.version, routes=self.app.routes
         )
 
         self.app.openapi_schema = openapi_schema
