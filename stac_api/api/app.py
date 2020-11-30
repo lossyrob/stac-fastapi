@@ -149,7 +149,6 @@ class StacApi:
         if self.app.openapi_schema:
             return self.app.openapi_schema
 
-        # TODO: parametrize
         openapi_schema = get_openapi(
             title=self.title, version=self.version, routes=self.app.routes
         )
@@ -202,9 +201,11 @@ class StacApi:
             writer = request.app.state.DB_WRITER()
             READER.set(reader)
             WRITER.set(writer)
-            resp = await call_next(request)
-            reader.close()
-            writer.close()
+            try:
+                resp = await call_next(request)
+            finally:
+                reader.close()
+                writer.close()
             return resp
 
     def __post_init__(self):
