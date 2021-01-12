@@ -1,5 +1,6 @@
 """Postgresql base client"""
 import abc
+from contextvars import ContextVar
 import logging
 from dataclasses import dataclass
 from typing import Optional, Type
@@ -10,9 +11,13 @@ from sqlalchemy.orm import Query
 import psycopg2
 from stac_api import errors
 from stac_api.models import database
-from stac_api.utils.dependencies import READER, WRITER
+
 
 logger = logging.getLogger(__name__)
+
+
+READER: ContextVar = ContextVar("reader")
+WRITER: ContextVar = ContextVar("writer")
 
 
 @dataclass

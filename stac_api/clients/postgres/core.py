@@ -5,16 +5,20 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Type, Union
 from urllib.parse import urlencode, urljoin
+from fastapi.applications import FastAPI
+from starlette.requests import Request
 
 import sqlalchemy as sa
 from sqlalchemy import func
+from sqlalchemy.orm import sessionmaker
 
 import geoalchemy2 as ga
 from sqlakeyset import get_page
+from sqlalchemy.engine import create_engine
 from stac_api import errors
 from stac_api.api.extensions import ContextExtension, FieldsExtension
 from stac_api.clients.base import BaseCoreClient
-from stac_api.clients.postgres.base import PostgresClient
+from stac_api.clients.postgres.base import PostgresClient, READER, WRITER
 from stac_api.clients.postgres.tokens import PaginationTokenClient
 from stac_api.errors import DatabaseError
 from stac_api.models import database, schemas
@@ -38,6 +42,46 @@ class CoreCrudClient(PostgresClient, BaseCoreClient):
     pagination_client: Optional[PaginationTokenClient] = None
     table: Type[database.Item] = database.Item
     collection_table: Type[database.Collection] = database.Collection
+
+    def register(self, app: FastAPI) -> None:
+        """Register client with the application"""
+        @app.on_event("startup")
+        async def on_startup():
+            """Create database engines and sessions on startup"""
+            app.state.ENGINE_READER = create_engine(
+                app.state.SETTINGS.reader_connection_string, echo=app.state.SETTINGS.debug
+            )
+            app.state.ENGINE_WRITER = create_engine(
+                app.state.SETTINGS.writer_connection_string, echo=app.state.SETTINGS.debug
+            )
+            app.state.DB_READER = sessionmaker(
+                autocommit=False, autoflush=False, bind=app.state.ENGINE_READER
+            )
+            app.state.DB_WRITER = sessionmaker(
+                autocommit=False, autoflush=False, bind=app.state.ENGINE_WRITER
+            )
+
+        @app.on_event("shutdown")
+        async def on_shutdown():
+            """Dispose of database engines and sessions on app shutdown"""
+            app.state.ENGINE_READER.dispose()
+            app.state.ENGINE_WRITER.dispose()
+
+        @app.middleware("http")
+        async def create_db_connection(request: Request, call_next):
+            """Create a new database connection for each request"""
+            if "titiler" in str(request.url):
+                return await call_next(request)
+            reader = request.app.state.DB_READER()
+            writer = request.app.state.DB_WRITER()
+            READER.set(reader)
+            WRITER.set(writer)
+            try:
+                resp = await call_next(request)
+            finally:
+                reader.close()
+                writer.close()
+            return resp
 
     def landing_page(self, **kwargs) -> LandingPage:
         """landing page"""

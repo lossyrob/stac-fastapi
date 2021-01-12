@@ -4,6 +4,8 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Type, Union
 
+from fastapi import FastAPI
+
 from stac_api.api.extensions.extension import ApiExtension
 from stac_api.models import schemas
 from stac_pydantic import ItemCollection
@@ -60,6 +62,11 @@ class BaseCoreClient(abc.ABC):
     def extension_is_enabled(self, extension: Type[ApiExtension]) -> bool:
         """check if an api extension is enabled"""
         return any([isinstance(ext, extension) for ext in self.extensions])
+
+    @abc.abstractmethod
+    def register(self, app: FastAPI) -> None:
+        """register client with the application"""
+        ...
 
     @abc.abstractmethod
     def landing_page(self, **kwargs) -> LandingPage:
