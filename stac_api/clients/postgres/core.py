@@ -185,7 +185,7 @@ class CoreCrudClient(PostgresClient, BaseCoreClient):
             links=links,
         )
 
-    def get_item(self, id: str, **kwargs) -> schemas.Item:
+    def get_item(self, id: str, collection_id: str, **kwargs) -> schemas.Item:
         """Get item by id"""
         obj = self.lookup_id(id).first()
         obj.base_url = str(kwargs["request"].base_url)

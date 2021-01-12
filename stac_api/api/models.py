@@ -72,7 +72,7 @@ class ItemUri(CollectionUri):
 
     def kwargs(self) -> Dict:
         """kwargs"""
-        return {"id": self.itemId}
+        return {"id": self.itemId, "collection_id": self.collectionId}
 
 
 @dataclass

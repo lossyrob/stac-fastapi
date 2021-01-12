@@ -96,7 +96,7 @@ class BaseCoreClient(abc.ABC):
         ...
 
     @abc.abstractmethod
-    def get_item(self, id: str, **kwargs) -> schemas.Item:
+    def get_item(self, id: str, collection_id: str, **kwargs) -> schemas.Item:
         """get item by id"""
         ...
 
