@@ -18,6 +18,7 @@ from sqlalchemy.engine import create_engine
 from stac_api import errors
 from stac_api.api.extensions import ContextExtension, FieldsExtension
 from stac_api.clients.base import BaseCoreClient
+from stac_api.clients.postgres.config import PostgresSettings
 from stac_api.clients.postgres.base import PostgresClient, READER, WRITER
 from stac_api.clients.postgres.tokens import PaginationTokenClient
 from stac_api.errors import DatabaseError
@@ -36,6 +37,7 @@ NumType = Union[float, int]
 @dataclass
 class CoreCrudClient(PostgresClient, BaseCoreClient):
     """Client for core endpoints defined by stac"""
+    settings: PostgresSettings = PostgresSettings()
 
     title: str = "Arturo STAC API"
     description: str = "Arturo raster datastore"
@@ -49,10 +51,10 @@ class CoreCrudClient(PostgresClient, BaseCoreClient):
         async def on_startup():
             """Create database engines and sessions on startup"""
             app.state.ENGINE_READER = create_engine(
-                app.state.SETTINGS.reader_connection_string, echo=app.state.SETTINGS.debug
+                self.settings.reader_connection_string, echo=app.debug
             )
             app.state.ENGINE_WRITER = create_engine(
-                app.state.SETTINGS.writer_connection_string, echo=app.state.SETTINGS.debug
+                self.settings.writer_connection_string, echo=app.debug
             )
             app.state.DB_READER = sessionmaker(
                 autocommit=False, autoflush=False, bind=app.state.ENGINE_READER

@@ -7,6 +7,8 @@ from stac_api.api.extensions import (
     TilesExtension,
     TransactionExtension,
 )
+
+from stac_api.clients.postgres.config import PostgresSettings
 from stac_api.clients.postgres.core import CoreCrudClient
 from stac_api.clients.postgres.tokens import PaginationTokenClient
 from stac_api.clients.postgres.transactions import TransactionsClient
@@ -21,6 +23,9 @@ api = StacApi(
         SortExtension(),
         TilesExtension(),
     ],
-    client=CoreCrudClient(pagination_client=PaginationTokenClient()),
+    client=CoreCrudClient(
+        settings=PostgresSettings(),
+        pagination_client=PaginationTokenClient()
+    ),
 )
 app = api.app

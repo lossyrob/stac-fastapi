@@ -166,7 +166,6 @@ class StacApi:
     def __post_init__(self):
         """post-init hook"""
         # inject settings
-        self.app.state.SETTINGS = self.settings
         self.app.debug = self.settings.debug
         self.client.extensions = self.extensions
 
