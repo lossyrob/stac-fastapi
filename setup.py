@@ -18,7 +18,7 @@ install_requires = [
     "sqlakeyset",
     "stac-pydantic>=1.3.5",
     "pydantic[dotenv]",
-    "cogeo-mosaic==3.0a17",
+    "cogeo-mosaic==3.0b1",
     "titiler==0.1a12",
     "rio-cogeo==2.0.1",
 ]
