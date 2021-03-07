@@ -16,7 +16,7 @@ install_requires = [
     "sqlalchemy",
     "geoalchemy2<0.8.0",
     "sqlakeyset",
-    "stac-pydantic>=1.3.5",
+    "stac-pydantic>=1.3.5,<1.3.9",
     "pydantic[dotenv]",
     "cogeo-mosaic==3.0b1",
     "titiler==0.1a12",
