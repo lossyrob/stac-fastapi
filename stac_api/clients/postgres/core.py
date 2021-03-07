@@ -39,6 +39,7 @@ class CoreCrudClient(PostgresClient, BaseCoreClient):
     """Client for core endpoints defined by stac"""
     settings: PostgresSettings = PostgresSettings()
 
+    landing_page_id: str = "stac-api"
     title: str = "Arturo STAC API"
     description: str = "Arturo raster datastore"
     pagination_client: Optional[PaginationTokenClient] = None
@@ -88,6 +89,7 @@ class CoreCrudClient(PostgresClient, BaseCoreClient):
     def landing_page(self, **kwargs) -> LandingPage:
         """landing page"""
         landing_page = LandingPage(
+            id=self.landing_page_id,
             title=self.title,
             description=self.description,
             links=[
