@@ -27,7 +27,7 @@ class BaseLinks:
     def root(self) -> Link:
         """Return the catalog root"""
         return Link(
-            rel=Relations.root, type=MimeTypes.json, href=urljoin(self.base_url, "/")
+            rel=Relations.root, type=MimeTypes.json, href=str(self.base_url)
         )
 
 
@@ -40,7 +40,7 @@ class CollectionLinks(BaseLinks):
         return Link(
             rel=Relations.self,
             type=MimeTypes.json,
-            href=urljoin(self.base_url, f"/collections/{self.collection_id}"),
+            href=urljoin(self.base_url, f"collections/{self.collection_id}"),
         )
 
     def parent(self) -> Link:
@@ -54,7 +54,7 @@ class CollectionLinks(BaseLinks):
         return Link(
             rel=Relations.item,
             type=MimeTypes.geojson,
-            href=urljoin(self.base_url, f"/collections/{self.collection_id}/items"),
+            href=urljoin(self.base_url, f"collections/{self.collection_id}/items"),
         )
 
     def create_links(self) -> List[Link]:
@@ -74,7 +74,7 @@ class ItemLinks(BaseLinks):
             rel=Relations.self,
             type=MimeTypes.geojson,
             href=urljoin(
-                self.base_url, f"/collections/{self.collection_id}/items/{self.item_id}"
+                self.base_url, f"collections/{self.collection_id}/items/{self.item_id}"
             ),
         )
 
@@ -83,7 +83,7 @@ class ItemLinks(BaseLinks):
         return Link(
             rel=Relations.parent,
             type=MimeTypes.json,
-            href=urljoin(self.base_url, f"/collections/{self.collection_id}"),
+            href=urljoin(self.base_url, f"collections/{self.collection_id}"),
         )
 
     def collection(self) -> Link:
@@ -91,7 +91,7 @@ class ItemLinks(BaseLinks):
         return Link(
             rel=Relations.collection,
             type=MimeTypes.json,
-            href=urljoin(self.base_url, f"/collections/{self.collection_id}"),
+            href=urljoin(self.base_url, f"collections/{self.collection_id}"),
         )
 
     def tiles(self) -> Link:
@@ -102,7 +102,7 @@ class ItemLinks(BaseLinks):
             title="tiles",
             href=urljoin(
                 self.base_url,
-                f"/collections/{self.collection_id}/items/{self.item_id}/tiles",
+                f"collections/{self.collection_id}/items/{self.item_id}/tiles",
             ),
         )
 
@@ -131,7 +131,7 @@ class TileLinks:
     def __post_init__(self):
         """post init"""
         self.item_uri = urljoin(
-            self.base_url, f"/collections/{self.collection_id}/items/{self.item_id}"
+            self.base_url, f"collections/{self.collection_id}/items/{self.item_id}"
         )
 
     def tiles(self) -> OGCTileLink:
@@ -139,7 +139,7 @@ class TileLinks:
         return OGCTileLink(
             href=urljoin(
                 self.base_url,
-                f"/titiler/tiles/{{z}}/{{x}}/{{y}}.png?url={self.item_uri}",
+                f"titiler/tiles/{{z}}/{{x}}/{{y}}.png?url={self.item_uri}",
             ),
             rel=Relations.item,
             title="tiles",
@@ -150,7 +150,7 @@ class TileLinks:
     def viewer(self) -> OGCTileLink:
         """Create viewer link"""
         return OGCTileLink(
-            href=urljoin(self.base_url, f"/titiler/viewer?url={self.item_uri}"),
+            href=urljoin(self.base_url, f"titiler/viewer?url={self.item_uri}"),
             rel=Relations.alternate,
             type=MimeTypes.html,
             title="viewer",
@@ -159,7 +159,7 @@ class TileLinks:
     def tilejson(self) -> OGCTileLink:
         """Create tilejson link"""
         return OGCTileLink(
-            href=urljoin(self.base_url, f"/titiler/tilejson.json?url={self.item_uri}"),
+            href=urljoin(self.base_url, f"titiler/tilejson.json?url={self.item_uri}"),
             rel=Relations.alternate,
             type=MimeTypes.json,
             title="tilejson",
@@ -169,7 +169,7 @@ class TileLinks:
         """Create wmts capabilities link"""
         return OGCTileLink(
             href=urljoin(
-                self.base_url, f"/titiler/WMTSCapabilities.xml?url={self.item_uri}"
+                self.base_url, f"titiler/WMTSCapabilities.xml?url={self.item_uri}"
             ),
             rel=Relations.alternate,
             type=MimeTypes.xml,
