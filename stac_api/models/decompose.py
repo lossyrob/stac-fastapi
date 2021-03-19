@@ -104,6 +104,8 @@ class CollectionGetter(GetterDict):
             license=obj.license,
             providers=obj.providers,
             summaries=obj.summaries,
+            assets=obj.assets,
+            item_assets=obj.item_assets,
             extent=obj.extent,
             links=collection_links,
         )

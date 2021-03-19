@@ -72,3 +72,9 @@ Run individual tests by running pytest within the docker container:
 make docker-shell
 $ pytest -v
 ```
+
+To run a single test,
+
+```
+$ pytest -v tests/clients/test_postgres.py::test_create_collection
+```

@@ -18,6 +18,8 @@ from stac_api import config
 from stac_api.models.decompose import CollectionGetter, ItemGetter
 from stac_pydantic import Collection as CollectionBase
 from stac_pydantic import Item as ItemBase
+from stac_pydantic.shared import Asset
+from stac_pydantic.extensions.item_assets import CollectionAsset
 from stac_pydantic.api import Search
 from stac_pydantic.api.extensions.fields import FieldsExtension as FieldsBase
 from stac_pydantic.api.search import DATETIME_RFC339
@@ -143,6 +145,8 @@ class Collection(CollectionBase):
     """Collection model"""
 
     links: Optional[List[Link]]
+    item_assets: Optional[Dict[str, CollectionAsset]]
+    assets: Optional[Dict[str, Asset]]
 
     class Config:
         """model config"""

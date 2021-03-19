@@ -14,7 +14,12 @@ ARG install_dev_dependencies=true
 WORKDIR /app
 
 COPY Pipfile Pipfile.lock setup.py ./
-RUN pipenv install --deploy --ignore-pipfile ${install_dev_dependencies:+--dev}
+RUN pipenv install --pre --deploy --ignore-pipfile ${install_dev_dependencies:+--dev}
+
+# Use a lock of stac-pydantic which pins to this fork's version and
+# has some fixes.
+# This will go away with this fork once we move to the new refactored codebase.
+RUN pipenv install --pre git+https://github.com/lossyrob/stac-pydantic@feature/rde/pc-changes#egg=stac-pydantic
 
 COPY . ./
 

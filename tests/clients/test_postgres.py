@@ -21,6 +21,17 @@ def test_create_collection(
     coll = postgres_core.get_collection(data.id, request=MockStarletteRequest)
     assert coll.id == data.id
 
+def test_create_collection2(
+    postgres_core: CoreCrudClient,
+    postgres_transactions: TransactionsClient,
+    load_test_data: Callable,
+):
+    data = Collection.parse_obj(load_test_data("test-aster.json"))
+    resp = postgres_transactions.create_collection(data, request=MockStarletteRequest)
+    assert data.dict(exclude={"links"}) == resp.dict(exclude={"links"})
+    coll = postgres_core.get_collection(data.id, request=MockStarletteRequest)
+    assert coll.id == data.id
+
 
 def test_create_collection_already_exists(
     postgres_core: CoreCrudClient,
