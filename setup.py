@@ -13,7 +13,7 @@ install_requires = [
     "alembic",
     "psycopg2-binary",
     "shapely",
-    "sqlalchemy",
+    "sqlalchemy==1.3.23",
     "geoalchemy2<0.8.0",
     "sqlakeyset",
     "stac-pydantic>=1.3.5,<1.3.9",
