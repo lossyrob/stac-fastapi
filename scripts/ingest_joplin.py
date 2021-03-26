@@ -1,5 +1,6 @@
 """Ingest sample data during docker-compose"""
 
+import json
 from urllib.parse import urljoin
 
 import requests
@@ -14,6 +15,14 @@ def ingest_joplin_data():
     collection = r.json()
 
     r = requests.post(urljoin(app_host, "/collections"), json=collection)
+    r.raise_for_status()
+
+    # Also aster json
+    with open('tests/data/test-aster.json') as f:
+        collection2 = json.load(f)
+    collection2['id'] = 'aster-l1t'
+
+    r = requests.post(urljoin(app_host, "/collections"), json=collection2)
     r.raise_for_status()
 
     r = requests.get(f"https://{bucket}.s3.amazonaws.com/joplin/index.geojson")

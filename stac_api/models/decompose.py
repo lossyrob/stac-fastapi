@@ -100,6 +100,7 @@ class CollectionGetter(GetterDict):
             stac_version=obj.stac_version,
             title=obj.title,
             description=obj.description,
+            short_description=obj.short_description,
             keywords=obj.keywords,
             license=obj.license,
             providers=obj.providers,

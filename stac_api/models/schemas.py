@@ -147,6 +147,7 @@ class Collection(CollectionBase):
     links: Optional[List[Link]]
     item_assets: Optional[Dict[str, CollectionAsset]]
     assets: Optional[Dict[str, Asset]]
+    short_description: Optional[str] = Field(None, alias="msft:short_description")
 
     class Config:
         """model config"""
@@ -154,6 +155,7 @@ class Collection(CollectionBase):
         orm_mode = True
         use_enum_values = True
         getter_dict = CollectionGetter
+        allow_population_by_field_name = True
 
 
 class Item(ItemBase):

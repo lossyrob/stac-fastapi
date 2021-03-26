@@ -52,6 +52,7 @@ class Collection(BaseModel):  # type:ignore
     stac_extensions = sa.Column(sa.ARRAY(sa.VARCHAR(300)), nullable=True)
     title = sa.Column(sa.VARCHAR(1024))
     description = sa.Column(sa.TEXT, nullable=False)
+    short_description = sa.Column(sa.VARCHAR(1024))
     keywords = sa.Column(sa.VARCHAR(300))
     version = sa.Column(sa.VARCHAR(300))
     license = sa.Column(sa.VARCHAR(300), nullable=False)
