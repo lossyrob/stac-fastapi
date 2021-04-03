@@ -10,6 +10,7 @@ from stac_api.api.extensions.extension import ApiExtension
 from stac_api.models import schemas
 from stac_pydantic import ItemCollection
 from stac_pydantic.api import ConformanceClasses, LandingPage
+from stac_pydantic.api.collections import Collections
 
 NumType = Union[float, int]
 
@@ -108,8 +109,8 @@ class BaseCoreClient(abc.ABC):
         ...
 
     @abc.abstractmethod
-    def all_collections(self) -> List[schemas.Collection]:
-        """get all collections"""
+    def collections(self) -> Collections:
+        """get collections collections"""
         ...
 
     @abc.abstractmethod

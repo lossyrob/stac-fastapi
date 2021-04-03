@@ -22,6 +22,7 @@ from stac_api.errors import DEFAULT_STATUS_CODES, add_exception_handlers
 from stac_api.models import schemas
 from stac_pydantic import ItemCollection
 from stac_pydantic.api import ConformanceClasses, LandingPage
+from stac_pydantic.api.collections import Collections
 
 
 @dataclass
@@ -108,12 +109,12 @@ class StacApi:
         router.add_api_route(
             name="Get Collections",
             path="/collections",
-            response_model=List[schemas.Collection],
+            response_model=Collections,
             response_model_exclude_unset=True,
             response_model_exclude_none=True,
             methods=["GET"],
             endpoint=create_endpoint_with_depends(
-                self.client.all_collections, EmptyRequest
+                self.client.collections, EmptyRequest
             ),
         )
         router.add_api_route(

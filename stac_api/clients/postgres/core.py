@@ -26,6 +26,7 @@ from stac_api.models import database, schemas
 from stac_api.models.links import CollectionLinks
 from stac_pydantic import ItemCollection
 from stac_pydantic.api import ConformanceClasses, LandingPage
+from stac_pydantic.api.collections import Collections
 from stac_pydantic.api.extensions.paging import PaginationLink
 from stac_pydantic.shared import Link, MimeTypes, Relations
 
@@ -118,8 +119,8 @@ class CoreCrudClient(PostgresClient, BaseCoreClient):
                 ),
             ],
         )
-        collections = self.all_collections(request=kwargs["request"])
-        for coll in collections:
+        col_result = self.collections(request=kwargs["request"])
+        for coll in col_result.collections:
             coll_link = CollectionLinks(
                 collection_id=coll.id, base_url=str(kwargs["request"].base_url)
             ).self()
@@ -137,8 +138,8 @@ class CoreCrudClient(PostgresClient, BaseCoreClient):
             ]
         )
 
-    def all_collections(self, **kwargs) -> List[schemas.Collection]:
-        """Read all collections from the database"""
+    def collections(self, **kwargs) -> Collections:
+        """Read collections from the database"""
         try:
             collections = self.reader_session.query(self.collection_table).all()
         except Exception as e:
@@ -147,11 +148,18 @@ class CoreCrudClient(PostgresClient, BaseCoreClient):
                 "Unhandled database error when getting item collection"
             )
 
-        response = []
+        response_collections = []
         for collection in collections:
             collection.base_url = str(kwargs["request"].base_url)
-            response.append(schemas.Collection.from_orm(collection))
-        return response
+            response_collections.append(schemas.Collection.from_orm(collection))
+        return Collections(
+            collections=response_collections,
+            links=[Link(
+                    rel=Relations.self,
+                    type=MimeTypes.json,
+                    href=urljoin(str(kwargs["request"].base_url), "collections"),
+                ),]
+        )
 
     def get_collection(self, id: str, **kwargs) -> schemas.Collection:
         """Get collection by id"""
