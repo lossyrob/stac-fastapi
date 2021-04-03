@@ -19,7 +19,7 @@ RUN pipenv install --pre --deploy --ignore-pipfile ${install_dev_dependencies:+-
 # Use a lock of stac-pydantic which pins to this fork's version and
 # has some fixes.
 # This will go away with this fork once we move to the new refactored codebase.
-RUN pipenv install --pre git+https://github.com/lossyrob/stac-pydantic@feature/rde/pc-changes#egg=stac-pydantic
+RUN pipenv install   --pre git+https://github.com/lossyrob/stac-pydantic@v1.3.8-PC-BETA#egg=stac-pydantic
 
 COPY . ./
 
