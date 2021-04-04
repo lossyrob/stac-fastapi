@@ -101,6 +101,8 @@ class CollectionGetter(GetterDict):
             title=obj.title,
             description=obj.description,
             short_description=obj.short_description,
+            storage_account=obj.storage_account,
+            container=obj.container,
             keywords=obj.keywords,
             license=obj.license,
             providers=obj.providers,

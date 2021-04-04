@@ -148,6 +148,8 @@ class Collection(CollectionBase):
     item_assets: Optional[Dict[str, CollectionAsset]]
     assets: Optional[Dict[str, Asset]]
     short_description: Optional[str] = Field(None, alias="msft:short_description")
+    storage_account: Optional[str] = Field(None, alias="msft:storage_account")
+    container: Optional[str] = Field(None, alias="msft:container")
 
     class Config:
         """model config"""
