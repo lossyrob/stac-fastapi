@@ -43,6 +43,7 @@ class CoreCrudClient(PostgresClient, BaseCoreClient):
     landing_page_id: str = "stac-api"
     title: str = "Arturo STAC API"
     description: str = "Arturo raster datastore"
+    pool_size: int = 5
     pagination_client: Optional[PaginationTokenClient] = None
     table: Type[database.Item] = database.Item
     collection_table: Type[database.Collection] = database.Collection
@@ -53,10 +54,10 @@ class CoreCrudClient(PostgresClient, BaseCoreClient):
         async def on_startup():
             """Create database engines and sessions on startup"""
             app.state.ENGINE_READER = create_engine(
-                self.settings.reader_connection_string, echo=app.debug
+                self.settings.reader_connection_string, echo=app.debug, pool_size=self.pool_size
             )
             app.state.ENGINE_WRITER = create_engine(
-                self.settings.writer_connection_string, echo=app.debug
+                self.settings.writer_connection_string, echo=app.debug, pool_size=self.pool_size
             )
             app.state.DB_READER = sessionmaker(
                 autocommit=False, autoflush=False, bind=app.state.ENGINE_READER

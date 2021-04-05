@@ -129,7 +129,8 @@ def api_client():
         settings=ApiSettings(),
         client=CoreCrudClient(
             settings=PostgresSettings(),
-            pagination_client=PaginationTokenClient()
+            pagination_client=PaginationTokenClient(),
+            pool_size=1
         ),
         extensions=[
             TransactionExtension(client=TransactionsClient()),
