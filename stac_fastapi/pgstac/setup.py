@@ -19,7 +19,7 @@ install_requires = [
     "brotli_asgi",
     "pygeofilter @ git+https://github.com/geopython/pygeofilter@v0.1.1#egg=pygeofilter",
     # TODO: "pypgstac==0.5.2",
-    "pypgstac @ git+https://github.com/stac-utils/pgstac@dc11b66539aac5aa37b81fb09b23b79a185a29d7#egg=pypgstac&subdirectory=pypgstac",
+    "pypgstac @ git+https://github.com/stac-utils/pgstac@5c809f39522051798e0e86c930fbfa227cef7396#egg=pypgstac&subdirectory=pypgstac",
 ]
 
 extra_reqs = {
